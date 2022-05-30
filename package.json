@@ -1,0 +1,21 @@
+{
+  "name": "nodeexpress",
+  "version": "1.0.0",
+  "description": "node 服务",
+  "main": "index.js",
+  "scripts": {
+    "serve1": "node src/server1.js",
+    "serve2": "node src/server2.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "后端服务"
+  ],
+  "author": "wenzhen",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {}
+}
