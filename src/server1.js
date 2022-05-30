@@ -1,6 +1,15 @@
 const express = require('express');
 const path = require('path');
+const WebSocket = require('ws');
 const app = express();
+
+const server = new WebSocket.Server({ port: 8001 });
+
+server.on('connection', function(socket) {
+    socket.on('message', function(data) {
+        socket.send(`我收到你的消息[${data}]，这是我的回信`);
+    });
+});
 
 app.get('/login', (req, res) => {
     res.cookie('token', '1234567890', { maxAge: 2000000, httpOnly: true })
