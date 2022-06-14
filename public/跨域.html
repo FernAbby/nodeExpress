@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>跨域测试</title>
+</head>
+<body>
+<button id="button">发送同源请求</button>
+<button id="cross-button">发送跨域请求</button>
+<button id="jsonp-button">JSONP跨域</button>
+<button id="websocket-button">websocket请求</button>
+<div id="content"></div>
+</body>
+<script>
+    function request(url) {
+        //1 创建对象
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true; // 跨域请求携带cookie等
+        //2 初始化 设置请求方法和url
+        xhr.open('GET', url);
+        //3 发送
+        xhr.send();
+        //4 事件绑定 处理服务端返回的结果
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+                console.log(xhr);
+                // 服务器返回结果
+                document.getElementById('content').innerText = JSON.stringify(xhr);
+            }
+        }
+    }
+    (function() {
+        // 登录请求，服务端种下cookie
+        request('http://localhost:9527/login');
+    })();
+
+    // 同源请求
+    document.querySelector('#button').onclick = function () {
+        request('http://localhost:9527/user');
+    };
+    // 跨域请求
+    document.querySelector('#cross-button').onclick = function () {
+        request('http://localhost:9528/userList');
+    };
+</script>
+<script>
+    // JSONP实现
+    function createJSONP() {
+        const script = document.createElement('script');
+        script.setAttribute('src', 'http://127.0.0.1:9528/userList?callback=getUser');
+        // 全局环境下的回调函数，一定要注意作用域
+        window.getUser = function(users) {
+            console.log('JSONP内部users===>', users);
+        }
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
+    // 跨域请求
+    document.querySelector('#jsonp-button').onclick = function () {
+        createJSONP();
+    };
+</script>
+<script>
+    function createSocket() {
+        const socket = new WebSocket('ws://localhost:8001');
+        socket.onopen = function() {
+            socket.send('这是一个测试');
+        };
+        socket.onmessage = function(e) {
+            console.log(e, e.data, socket);
+        };
+    }
+    // websocket请求
+    document.querySelector('#websocket-button').onclick = function () {
+        createSocket();
+    };
+</script>
+</html>
