@@ -9,6 +9,12 @@
     <div id="container" onclick="addCount()">元素绑定事件</div>
     <div id="container2">JS绑定事件</div>
     <input id="inputELe" />
+    <form action="http://127.0.0.1:9527/file_upload" method="POST">
+        <input name="file" type="file" />
+        <input name="name" />
+        <input name="size" />
+        <input type="submit" />
+    </form>
     <script>
         let count = 0;
         function addCount(e) {
@@ -19,6 +25,23 @@
         document.getElementById('inputELe').addEventListener('input', Util.debounce((e) => {
             console.log('e===>', e);
         }, 1000), true);
+    </script>
+    <script src="src/Promise.js"></script>
+    <script>
+        const promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(1);
+            }, 1000);
+        });
+        promise.then((data) => {
+            console.log('then1===>', data);
+            return 2;
+        }, (error) => {
+            console.log('catch===>', error);
+            return 3;
+        }).then((data) => {
+            console.log('then2===>', data);
+        });
     </script>
 </body>
 </html>

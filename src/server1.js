@@ -22,6 +22,11 @@ app.get('/user', (req, res) => {
     res.json({ code: 0, message: '查询用户成功' });
 });
 
+app.post('/file_upload', (req, res) => {
+    console.log('file', req);
+    res.json({ code: 0, message: '上传成功' });
+});
+
 // 托管`index.html`页面
 // 在`index.html`中发起的请求，默认的源就是`http://localhost:9527`
 // 然后再去请求`http://localhost:9528`就会出现跨域了
